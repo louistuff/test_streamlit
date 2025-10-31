@@ -3,6 +3,15 @@ import pandas as pd
 import gspread
 from datetime import datetime
 from google.oauth2.service_account import Credentials
+import json
+
+creds_dict = json.loads(st.secrets["gcp_service_account"])
+creds = Credentials.from_service_account_info(creds_dict, scopes=[
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+])
+client = gspread.authorize(creds)
+
 
 # --- Configuration Streamlit ---
 st.set_page_config(page_title="Questionnaire conditionnel", page_icon="🧠", layout="centered")
@@ -114,3 +123,4 @@ with col3:
 st.divider()
 with st.expander("📋 Réponses temporaires"):
     st.json(st.session_state.responses)
+
